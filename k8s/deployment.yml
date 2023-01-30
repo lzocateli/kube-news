@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgre
+spec:
+  selector:
+    matchLabels:
+      app: postgre
+  template: 
+    metadata:
+      labels: 
+        app: postgre
+    spec:
+      containers:
+      - name: postgre
+        image: postgres:15.0
+        ports:
+        - containerPorts: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "Pg#123"
+        - name: POSTGRES_USER
+          value: "kubenews"
+        - name: POSTGRES_PASSWORD
+          value: "kubenews"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-page
+spec:
+  selector:
+    app: web
+  ports:
+    - port: 80
+      protocol: TCP
+  type: NodePort
